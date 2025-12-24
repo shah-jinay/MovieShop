@@ -2,10 +2,13 @@ trigger:
 - main
 
 pool:
-  name: Default   # your Azure DevOps agent pool name
+  name: Default
 
 variables:
   buildConfiguration: 'Release'
+  azureServiceConnection: 'movieshopp'   # <-- this fixes ConnectedServiceName
+  webAppName: 'movieshopp'                      # <-- e.g., movieshop-prod
+  projectToPublish: '**/*/*.csproj'                        # <-- ideally set to a single web project csproj
 
 steps:
 - task: UseDotNet@2
@@ -15,18 +18,38 @@ steps:
     version: "9.x"
 
 - task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
     command: 'restore'
     projects: '**/*.sln'
 
 - task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
     command: 'build'
     projects: '**/*.sln'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: 'test'
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
+
+# Publish your web app (set projectToPublish to the actual web project csproj for best results)
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: 'publish'
+    projects: '$(projectToPublish)'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish'
+    zipAfterPublish: true
+
+# Deploy the zip to Azure App Service
+- task: AzureWebApp@1
+  displayName: Deploy to Azure App Service
+  inputs:
+    azureSubscription: '$(azureServiceConnection)'  # <-- ConnectedServiceName
+    appName: '$(webAppName)'
+    package: '$(Build.ArtifactStagingDirectory)/publish/**/*.zip'
