@@ -1,0 +1,15 @@
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/bin/Debug/net9.0/Infrastructure.deps.json
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/bin/Debug/net9.0/Infrastructure.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/bin/Debug/net9.0/Infrastructure.pdb
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/bin/Debug/net9.0/ApplicationCore.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/bin/Debug/net9.0/ApplicationCore.pdb
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.csproj.AssemblyReference.cache
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.AssemblyInfoInputs.cache
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.AssemblyInfo.cs
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.csproj.CoreCompileInputs.cache
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastr.15EFFBFE.Up2Date
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/refint/Infrastructure.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/Infrastructure.pdb
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/Infrastructure/obj/Debug/net9.0/ref/Infrastructure.dll

@@ -1,0 +1,25 @@
+@model ApplicationCore.Models.MovieCardModel
+<div class="col-xl-3 col-lg-4 col-md-6 col-12">
+    <div class="movie-card shadow-lg">
+        <div class="movie-card__poster">
+            <img src="@Model.PosterURL" alt="@Model.Title" loading="lazy"/>
+            <div class="movie-card__overlay">
+                <p class="movie-card__tagline">Tap to explore</p>
+                <a class="btn btn-gradient btn-sm" asp-controller="Movies" asp-action="MovieDetails" asp-route-id="@Model.Id">
+                    View Details
+                </a>
+            </div>
+        </div>
+        <div class="movie-card__info">
+            <h5 class="movie-card__title">@Model.Title</h5>
+            <div class="movie-card__meta">
+                <span class="badge rounded-pill bg-dark text-uppercase">Feature Film</span>
+                <a class="stretched-link" asp-controller="Movies" asp-action="MovieDetails" asp-route-id="@Model.Id"></a>
+            </div>
+            <div class="movie-card__footer">
+                <span class="movie-card__rating">★ 9.<small>0</small></span>
+                <span class="movie-card__cta">Details</span>
+            </div>
+        </div>
+    </div>
+</div>

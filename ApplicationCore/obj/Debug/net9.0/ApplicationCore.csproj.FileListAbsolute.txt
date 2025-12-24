@@ -1,0 +1,11 @@
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/bin/Debug/net9.0/ApplicationCore.deps.json
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/bin/Debug/net9.0/ApplicationCore.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/bin/Debug/net9.0/ApplicationCore.pdb
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ApplicationCore.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ApplicationCore.AssemblyInfoInputs.cache
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ApplicationCore.AssemblyInfo.cs
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ApplicationCore.csproj.CoreCompileInputs.cache
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ApplicationCore.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/refint/ApplicationCore.dll
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ApplicationCore.pdb
+/Users/jinayshah/Library/Mobile Documents/com~apple~CloudDocs/Antra/C#/MovieShop/ApplicationCore/obj/Debug/net9.0/ref/ApplicationCore.dll

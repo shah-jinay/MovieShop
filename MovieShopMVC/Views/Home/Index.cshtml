@@ -1,0 +1,16 @@
+﻿@model IEnumerable<ApplicationCore.Models.MovieCardModel>
+<section class="movie-section section-panel">
+    <div class="section-header d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <p class="eyebrow text-uppercase text-muted mb-1">Featured this week</p>
+            <h2 class="fw-semibold mb-0">Spotlight Collection</h2>
+        </div>
+        <a asp-controller="Movies" asp-action="Index" class="link-arrow">See all →</a>
+    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        @foreach (var movie in Model)
+        {
+            <partial name="_MovieCard" model="movie"/>
+        }
+    </div>
+</section>

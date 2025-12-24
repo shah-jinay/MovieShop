@@ -1,0 +1,161 @@
+﻿@using ApplicationCore.Contracts.Services
+@using MovieShopMVC.Models
+@inject IMovieService MovieService
+@{
+    var genres = MovieService.GetAllGenres();
+    int? selectedGenreId = null;
+    var genreQuery = Context.Request.Query["genreId"].ToString();
+    if (!string.IsNullOrWhiteSpace(genreQuery) && int.TryParse(genreQuery, out var parsedGenre))
+    {
+        selectedGenreId = parsedGenre;
+    }
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] Movie Shop</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/MovieShopMVC.styles.css" asp-append-version="true"/>
+</head>
+<body>
+<header class="app-header">
+    <div class="app-header__inner container-xl px-3 px-lg-4">
+        <a class="app-brand" asp-area="" asp-controller="Home" asp-action="Index">Movie<span class="text-muted">Shop</span></a>
+        <nav class="app-nav d-none d-md-flex">
+            <a class="@(currentController == "Home" ? "active" : string.Empty)" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="@(currentController == "Movies" ? "active" : string.Empty)" asp-controller="Movies" asp-action="Index">Movies</a>
+        </nav>
+        <div class="app-header__controls">
+            <form asp-controller="Movies" asp-action="Index" method="get" class="d-none d-md-flex align-items-center">
+                <select class="genre-select" id="genreSelect" name="genreId" onchange="this.form.submit()">
+                    <option value="" selected="@(selectedGenreId.HasValue ? null : "selected")">All Genres</option>
+                    @foreach (var genre in genres)
+                    {
+                        var isSelected = selectedGenreId.HasValue && genre.Id == selectedGenreId.Value;
+                        <option value="@genre.Id" selected="@(isSelected ? "selected" : null)">
+                            @genre.Name
+                        </option>
+                    }
+                </select>
+            </form>
+            <button id="themeToggle" class="btn btn-outline-light theme-toggle" type="button" aria-label="Toggle color theme">
+                <span class="theme-icon" data-theme-icon="light">☀️</span>
+            </button>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @User.Identity?.Name
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown-subheader text-uppercase text-muted px-3">Admin</li>
+                            <li><a class="dropdown-item" asp-controller="Admin" asp-action="CreateMovie">Create Movie</a></li>
+                            <li><a class="dropdown-item" asp-controller="Admin" asp-action="TopMovies">Top Grossing Movies</a></li>
+                            <li><a class="dropdown-item" asp-controller="Admin" asp-action="TopPurchasedMovies">Top Purchased Movies</a></li>
+                            <li><hr class="dropdown-divider"/></li>
+                        }
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Favorites">Favorites</a></li>
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Purchases">Purchases</a></li>
+                        <li><hr class="dropdown-divider"/></li>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="px-3" asp-antiforgery="true">
+                                <button type="submit" class="btn btn-link p-0 text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Login">Login</a>
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Register</a>
+            }
+        </div>
+    </div>
+</header>
+<div class="app-shell container-xl">
+    <main role="main" class="app-main">
+        @RenderBody()
+        @{
+            var pagination = ViewBag.Pagination as PaginationViewModel;
+        }
+        @if (pagination != null && pagination.TotalPages > 1)
+        {
+            <section class="my-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center flex-wrap gap-1">
+                        <li class="page-item @(string.IsNullOrEmpty(pagination.PreviousPageUrl) ? "disabled" : string.Empty)">
+                            <a class="page-link" href="@(pagination.PreviousPageUrl ?? "#")">← Previous</a>
+                        </li>
+                        @foreach (var link in pagination.Links)
+                        {
+                            if (link.IsEllipsis)
+                            {
+                                <li class="page-item disabled"><span class="page-link">…</span></li>
+                            }
+                            else
+                            {
+                                <li class="page-item @(link.IsCurrent ? "active" : string.Empty)">
+                                    <a class="page-link" href="@link.Url">@link.PageNumber</a>
+                                </li>
+                            }
+                        }
+                        <li class="page-item @(string.IsNullOrEmpty(pagination.NextPageUrl) ? "disabled" : string.Empty)">
+                            <a class="page-link" href="@(pagination.NextPageUrl ?? "#")">Next →</a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        }
+    </main>
+</div>
+
+<footer class="app-footer mt-5">
+    <div class="container-xl d-flex flex-wrap justify-content-between align-items-center gap-3 py-4">
+        <div class="text-muted small">
+            &copy; @DateTime.UtcNow.Year MovieShop. All rights reserved.
+        </div>
+        <div class="d-flex gap-3 small">
+            <a asp-controller="Home" asp-action="Privacy" class="text-muted text-decoration-none">Privacy</a>
+            <a href="mailto:support@movieshop.com" class="text-muted text-decoration-none">Support</a>
+        </div>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    (function () {
+        const root = document.documentElement;
+        const toggle = document.getElementById('themeToggle');
+        const icon = toggle?.querySelector('[data-theme-icon]');
+        const savedTheme = localStorage.getItem('movieShopTheme') ?? 'light';
+
+        function applyTheme(theme) {
+            root.setAttribute('data-theme', theme);
+            if (icon) {
+                icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+                icon.dataset.themeIcon = theme;
+            }
+            localStorage.setItem('movieShopTheme', theme);
+        }
+
+        applyTheme(savedTheme);
+
+        toggle?.addEventListener('click', () => {
+            const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(nextTheme);
+        });
+    })();
+</script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

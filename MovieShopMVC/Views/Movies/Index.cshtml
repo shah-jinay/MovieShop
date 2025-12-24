@@ -1,0 +1,88 @@
+@using System.Linq
+@model GenreMoviesViewModel
+
+@{
+    var selectedGenreName = Model.SelectedGenreId.HasValue
+        ? Model.Genres.FirstOrDefault(g => g.Id == Model.SelectedGenreId)?.Name
+        : null;
+    var genreShowcase = Model.Genres.Take(10).ToList();
+}
+
+<section class="section-panel mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <div>
+            <p class="eyebrow text-uppercase text-muted mb-2">Browse</p>
+            <h1 class="fw-bold mb-1">Movie Library</h1>
+            <p class="text-secondary mb-0">Filter by genre or scroll through our curated lists.</p>
+        </div>
+        <form asp-controller="Movies" asp-action="Index" method="get" class="d-flex gap-2 align-items-center">
+            <select class="genre-select" name="genreId" onchange="this.form.submit()">
+                <option value="" selected="@(Model.SelectedGenreId.HasValue ? null : "selected")">All Genres</option>
+                @foreach (var genre in Model.Genres)
+                {
+                    var isSelected = Model.SelectedGenreId == genre.Id;
+                    <option value="@genre.Id" selected="@(isSelected ? "selected" : null)">
+                        @genre.Name
+                    </option>
+                }
+            </select>
+            <noscript>
+                <button class="btn btn-outline-secondary">Apply</button>
+            </noscript>
+        </form>
+    </div>
+</section>
+
+@if (genreShowcase.Any())
+{
+    <section class="genre-showcase mb-5">
+        <div class="d-flex justify-content-between flex-wrap align-items-center mb-3">
+            <div>
+                <p class="eyebrow mb-1">Genres</p>
+                <h3 class="fw-semibold mb-0">Choose your vibe</h3>
+            </div>
+            <span class="text-muted small">Featuring @genreShowcase.Count hand-picked categories</span>
+        </div>
+        <div class="genre-chips">
+            @foreach (var genre in genreShowcase)
+            {
+                var isSelected = Model.SelectedGenreId.HasValue && Model.SelectedGenreId == genre.Id;
+                <a asp-controller="Movies" asp-action="Index" asp-route-genreId="@genre.Id"
+                   class="chip @(isSelected ? "chip-active" : string.Empty)">
+                    @genre.Name
+                </a>
+            }
+        </div>
+    </section>
+}
+
+<section class="section-panel py-5" id="movie-grid">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <p class="eyebrow mb-1">Featured Selection</p>
+            <h2 class="fw-semibold mb-0">@(selectedGenreName ?? "Top Movies")</h2>
+        </div>
+        <div class="text-muted small">
+            Showing <strong>@Model.Movies.Count</strong> incredible stories
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 movie-grid">
+        @if (Model.Movies.Any())
+        {
+            foreach (var movie in Model.Movies)
+            {
+                <partial name="_MovieCard" model="movie"/>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info shadow-sm rounded-4 p-4">
+                    <h5 class="fw-semibold mb-1">No results</h5>
+                    <p class="mb-0">Try selecting another genre to continue your cinematic journey.</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>

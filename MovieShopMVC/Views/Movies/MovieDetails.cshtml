@@ -1,0 +1,118 @@
+@model ApplicationCore.Models.MovieDetailsModel
+
+@{
+    var heroImage = string.IsNullOrWhiteSpace(Model.PosterUrl)
+        ? "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1200&q=80"
+        : Model.PosterUrl;
+    var runtimeText = Model.Runtime.HasValue
+        ? $"{Model.Runtime.Value / 60}h {Model.Runtime.Value % 60}m"
+        : "Runtime TBD";
+    var releaseYear = Model.ReleaseDate?.Year.ToString() ?? "Year TBD";
+    var releaseDate = Model.ReleaseDate?.ToString("MMM dd, yyyy") ?? "Coming Soon";
+    var languageText = !string.IsNullOrWhiteSpace(Model.OriginalLanguage) ? Model.OriginalLanguage : "Language TBD";
+}
+
+<section class="details-hero" style="background-image: url('@heroImage');">
+    <div class="details-hero__overlay"></div>
+    <div class="container position-relative">
+        <div class="row align-items-end g-4">
+            <div class="col-lg-4">
+                <div class="details-poster shadow-lg">
+                    <img src="@heroImage" alt="@Model.Title" class="img-fluid rounded-4 mb-3">
+                </div>
+            </div>
+            <div class="col-lg-8 text-white">
+                <p class="eyebrow mb-2 text-uppercase">Featured Title</p>
+                <h1 class="display-5 fw-bold mb-2">@Model.Title</h1>
+                <p class="lead opacity-75 mb-1">@Model.TagLine</p>
+                <div class="details-meta d-flex flex-wrap gap-2 mb-3">
+                    <span class="meta-chip">@runtimeText</span>
+                    <span class="meta-chip">@releaseYear</span>
+                    <span class="meta-chip">@languageText</span>
+                </div>
+                <p class="hero-overview mb-4">@Model.Overview</p>
+                <div class="details-actions d-flex flex-wrap gap-3 justify-content-lg-start justify-content-center">
+                    <a class="btn btn-gradient" href="#purchase">Buy / Rent</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="details-body container py-5">
+    <div class="row g-4 details-grid">
+        <div class="col-lg-8">
+            <div class="details-card mb-4" id="cast">
+                <h3 class="details-card__title">Cast &amp; Crew</h3>
+                @if (Model.Casts.Any())
+                {
+                    <div class="row g-3">
+                        @foreach (var cast in Model.Casts)
+                        {
+                            <div class="col-md-4">
+                                <div class="details-chip d-flex align-items-center gap-3">
+                                    <img src="@cast.ProfilePath" alt="@cast.Name" class="details-cast-avatar">
+                                    <div>
+                                        <strong>@cast.Name</strong>
+                                        <div class="text-muted small">@cast.Character</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Cast information will be available soon.</p>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="details-card mb-4 details-card--accent">
+                <h4 class="details-card__title">Movie Facts</h4>
+                <dl class="details-facts">
+                    <div>
+                        <dt>Budget</dt>
+                        <dd>@Model.Budget.ToString("C")</dd>
+                    </div>
+                    <div>
+                        <dt>Revenue</dt>
+                        <dd>@Model.Revenue.ToString("C")</dd>
+                    </div>
+                    <div>
+                        <dt>Rating</dt>
+                        <dd>@(Model.AverageRating?.ToString("0.0") ?? "TBD")</dd>
+                    </div>
+                    <div>
+                        <dt>Language</dt>
+                        <dd>@languageText</dd>
+                    </div>
+                    <div>
+                        <dt>Release</dt>
+                        <dd>@releaseDate</dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="details-card purchase-card" id="purchase">
+                <h4 class="details-card__title text-white">Buy Options</h4>
+                <p class="text-white-50 mb-4">Secure your copy or schedule a premium screening.</p>
+                <div class="d-grid gap-3">
+                    <button class="btn btn-light text-dark" type="button">
+                        Buy Digital @(Model.Price.HasValue ? Model.Price.Value.ToString("C") : "")
+                    </button>
+                    <button class="btn btn-outline-light" type="button">Gift This Movie</button>
+                </div>
+            </div>
+            <div class="details-card">
+                <h4 class="details-card__title">Admin Controls</h4>
+                <div class="d-flex flex-column gap-2">
+                    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit Movie</a>
+                    <form asp-action="DeleteMovie" asp-route-id="@Model.Id" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this movie?');">
+                        <button type="submit" class="btn btn-outline-danger w-100">Delete Movie</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
