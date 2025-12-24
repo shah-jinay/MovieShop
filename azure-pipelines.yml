@@ -6,9 +6,9 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  azureServiceConnection: 'movieshopp'   # <-- this fixes ConnectedServiceName
-  webAppName: 'movieshopp'                      # <-- e.g., movieshop-prod
-  projectToPublish: '**/*/*.csproj'                        # <-- ideally set to a single web project csproj
+  azureServiceConnection: 'Azure subscription 1 (1373009b-21ce-4af1-994f-6fd349b36266)'
+  webAppName: 'movieshopp'
+  projectToPublish: 'MovieShopMVC/MovieShopMVC.csproj'   # <-- set this to your web project
 
 steps:
 - task: UseDotNet@2
@@ -37,7 +37,6 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-# Publish your web app (set projectToPublish to the actual web project csproj for best results)
 - task: DotNetCoreCLI@2
   displayName: Publish
   inputs:
@@ -46,10 +45,9 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish'
     zipAfterPublish: true
 
-# Deploy the zip to Azure App Service
 - task: AzureWebApp@1
   displayName: Deploy to Azure App Service
   inputs:
-    azureSubscription: '$(azureServiceConnection)'  # <-- ConnectedServiceName
+    azureSubscription: '$(azureServiceConnection)'
     appName: '$(webAppName)'
     package: '$(Build.ArtifactStagingDirectory)/publish/**/*.zip'
